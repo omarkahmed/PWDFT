@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.17)
 
+message("Start")
+
 # set the project name
 project(PWDFT VERSION 1.0)
 option( NWPW_SYCL "Enable SYCL Bindings" OFF )
@@ -62,7 +64,7 @@ if (NWPW_CUDA)
 
    enable_language(CUDA)
    find_package(CUDAToolkit REQUIRED)
-   set(CMAKE_CUDA_ARCHITECTURES "60;70;80" CACHE STRING "GPU targets to compile for")
+   set(CMAKE_CUDA_ARCHITECTURES "60;70;80;90" CACHE STRING "GPU targets to compile for")
    message("-- CUDA Architecuture: " ${CMAKE_CUDA_ARCHITECTURES})
 
    message("-- Using cublas  : " ${CUDA_cublas_LIBRARY})
