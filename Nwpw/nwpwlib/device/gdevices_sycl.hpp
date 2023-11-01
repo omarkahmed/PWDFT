@@ -269,7 +269,8 @@ public:
  
      for (auto i=0; i<12; ++i) {
        stream.push_back(new sycl::queue(
-           sycl::gpu_selector_v, asyncHandler,
+           //sycl::gpu_selector_v, asyncHandler,
+           asyncHandler,
            sycl::property_list{sycl::property::queue::in_order{}}));
      }
  
