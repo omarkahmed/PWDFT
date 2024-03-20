@@ -1126,13 +1126,13 @@ public:
                                             matN, matN,
                                             m, n, k,
                                             reinterpret_cast<std::complex<double> *>(alpha),
-                                            reinterpret_cast<std::complex<double> *>(host_a), lda,
-                                            //reinterpret_cast<std::complex<double> *>(dev_mem[ia]), lda,
-                                            reinterpret_cast<std::complex<double> *>(host_b), ldb,
-                                            //reinterpret_cast<std::complex<double> *>(dev_mem[ib]), ldb,
+                                            //reinterpret_cast<std::complex<double> *>(host_a), lda,
+                                            reinterpret_cast<std::complex<double> *>(dev_mem[ia]), lda,
+                                            //reinterpret_cast<std::complex<double> *>(host_b), ldb,
+                                            reinterpret_cast<std::complex<double> *>(dev_mem[ib]), ldb,
                                             reinterpret_cast<std::complex<double> *>(beta),
-                                            //reinterpret_cast<std::complex<double> *>(dev_mem[ic]), ldc);
-                                            reinterpret_cast<std::complex<double> *>(host_c), ldc);
+                                            reinterpret_cast<std::complex<double> *>(dev_mem[ic]), ldc);
+                                            //reinterpret_cast<std::complex<double> *>(host_c), ldc);
  
       // Perform asynchronous memory transfer back to host
       syclGetMatrixAsync(ldc, n, sizeof(std::complex<double>), dev_mem[ic], ldc, host_c, ldc, stream[0]);
