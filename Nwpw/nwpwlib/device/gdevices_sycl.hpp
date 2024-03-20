@@ -1092,12 +1092,17 @@ public:
    } 
 
 
-/*   void NN_zgemm(int m, int n, int k,
-                 std::complex<double> *alpha,
-                 std::complex<double> *host_a, int lda,
-                 std::complex<double> *host_b, int ldb,
-                 std::complex<double> *beta,
-                 std::complex<double> *host_c, int ldc)
+   void NN_zgemm(int m, int n, int k,
+                 double *alpha,
+                 double *host_a, int lda,
+                 double *host_b, int ldb,
+                 double *beta,
+                 double *host_c, int ldc)          
+       //std::complex<double> *alpha,
+                 //std::complex<double> *host_a, int lda,
+                 //std::complex<double> *host_b, int ldb,
+                 //std::complex<double> *beta,
+                 //std::complex<double> *host_c, int ldc)
    {
       // Calculate indices for device memory
       int ia = fetch_dev_mem_indx(static_cast<size_t>(2*lda) * static_cast<size_t>(k));
@@ -1105,9 +1110,9 @@ public:
       int ic = fetch_dev_mem_indx(static_cast<size_t>(2*ldc) * static_cast<size_t>(n));
  
       // Cast complex pointers to oneMKL complex data type
-      auto complex_A = reinterpret_cast<oneapi::mkl::blas::complex_double *>(host_a);
-      auto complex_B = reinterpret_cast<oneapi::mkl::blas::complex_double *>(host_b);
-      auto complex_C = reinterpret_cast<oneapi::mkl::blas::complex_double *>(host_c);
+      //auto complex_A = reinterpret_cast<std::complex<double> *>(host_a);
+      //auto complex_B = reinterpret_cast<std::complex<double> *>(host_b);
+      //auto complex_C = reinterpret_cast<std::complex<double> *>(host_c);
  
       // Perform asynchronous memory transfer to device
       syclSetMatrixAsync(lda, k, sizeof(std::complex<double>), host_a, lda, dev_mem[ia], lda, stream[0]);
@@ -1120,11 +1125,14 @@ public:
       oneapi::mkl::blas::column_major::gemm(*stream[0],
                                             matN, matN,
                                             m, n, k,
-                                            alpha,
-                                            complex_A, lda,
-                                            complex_B, ldb,
-                                            beta,
-                                            complex_C, ldc);
+                                            reinterpret_cast<std::complex<double> *>(alpha),
+                                            reinterpret_cast<std::complex<double> *>(host_a), lda,
+                                            //reinterpret_cast<std::complex<double> *>(dev_mem[ia]), lda,
+                                            reinterpret_cast<std::complex<double> *>(host_b), ldb,
+                                            //reinterpret_cast<std::complex<double> *>(dev_mem[ib]), ldb,
+                                            reinterpret_cast<std::complex<double> *>(beta),
+                                            //reinterpret_cast<std::complex<double> *>(dev_mem[ic]), ldc);
+                                            reinterpret_cast<std::complex<double> *>(host_c), ldc);
  
       // Perform asynchronous memory transfer back to host
       syclGetMatrixAsync(ldc, n, sizeof(std::complex<double>), dev_mem[ic], ldc, host_c, ldc, stream[0]);
@@ -1136,8 +1144,8 @@ public:
       inuse[ia] = false;
       inuse[ib] = false;
       inuse[ic] = false;
-   } */
-   void NN_zgemm(int m, int n, int k,
+   }
+   /*void NN_zgemm(int m, int n, int k,
                  double *alpha, 
                  double *host_a, int lda,
                  double *host_b, int ldb,
@@ -1145,7 +1153,7 @@ public:
                  double *host_c,int ldc) 
    {
       ZGEMM_PWDFT((char *)"N", (char *)"N", m, n, k, alpha, host_a, lda, host_b, ldb, beta, host_c, ldc);
-   }   
+   } */  
    
 
 
